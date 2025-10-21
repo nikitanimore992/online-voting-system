@@ -8,6 +8,7 @@
 	<title>Login - Online Voting System</title>
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/login.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <!--Coded with love by Mutiullah Samim-->
 <body>
@@ -16,7 +17,7 @@
 			<div class="user_card">
 				<div class="d-flex justify-content-center">
 					<div class="brand_logo_container">
-						<img src="https://cdn.freebiesupply.com/logos/large/2x/pinterest-circle-logo-png-transparent.png" class="brand_logo" alt="Logo">
+						<img src="assets/images/logo.gif" class="brand_logo" alt="Logo">
 					</div>
 				</div>
 				<div class="d-flex justify-content-center form_container">
@@ -36,7 +37,7 @@
 						<div class="form-group">
 							<div class="custom-control custom-checkbox">
 								<input type="checkbox" class="custom-control-input" id="customControlInline">
-								<label class="custom-control-label" for="customControlInline">Remember me</label>
+								<label class="custom-control-label text-white" for="customControlInline">Remember me</label>
 							</div>
 						</div>
 							<div class="d-flex justify-content-center mt-3 login_container">
@@ -46,11 +47,11 @@
 				</div>
 		
 				<div class="mt-4">
-					<div class="d-flex justify-content-center links">
-						Don't have an account? <a href="#" class="ml-2">Sign Up</a>
+					<div class="d-flex justify-content-center links text-white">
+						Don't have an account? <a href="#" class="ml-2 text-white">Sign Up</a>
 					</div>
 					<div class="d-flex justify-content-center links">
-						<a href="#">Forgot your password?</a>
+						<a href="#" class="text-white">Forgot your password?</a>
 					</div>
 				</div>
 			</div>
