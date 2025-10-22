@@ -2,6 +2,8 @@
 
 <?php 
 
- $db = mysqli_connect("localhost", "root", "", "onlinevotingsystem") or die("Could not connect to database");
-
+ $db = new mysqli("localhost", "root", "", "onlinevotingsystem");
+ if ($db->connect_error) {
+    die("Database connection failed: " . $db->connect_error);
+}
 ?>
