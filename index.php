@@ -185,8 +185,14 @@ if (isset($_POST['sign_up_btn'])) {
 
             // Redirect based on user_role
             if ($user['user_role'] == "Admin") {
+
+                $_SESSION['key']="AdminKey";
+                
                 echo "<script>location.assign('admin/index.php');</script>";
             } else if ($user['user_role'] == "Voter") {
+
+                $_SESSION['key']="VoterKey";
+
                 echo "<script>location.assign('dashboard.php');</script>";
             } else {
                 echo "<script>
