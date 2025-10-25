@@ -121,7 +121,7 @@ if (isset($_POST['sign_up_btn'])) {
     if ($su_password === $su_retype_password) {
 
         // ✅ Check if contact number already exists
-        $check_stmt = $db->prepare("SELECT id FROM users WHERE contact_no = ?");
+        $check_stmt = $db->prepare("SELECT id FROM userss WHERE contact_no = ?");
         $check_stmt->bind_param("s", $su_contact_no);
         $check_stmt->execute();
         $check_result = $check_stmt->get_result();
@@ -137,7 +137,7 @@ if (isset($_POST['sign_up_btn'])) {
             $hashed_password = password_hash($su_password, PASSWORD_DEFAULT);
 
             // ✅ Insert new user
-            $stmt = $db->prepare("INSERT INTO users (username, contact_no, password, user_role) VALUES (?, ?, ?, ?)");
+            $stmt = $db->prepare("INSERT INTO userss (username, contact_no, password, user_role) VALUES (?, ?, ?, ?)");
             $stmt->bind_param("ssss", $su_username, $su_contact_no, $hashed_password, $user_role);
 
             if ($stmt->execute()) {
@@ -169,7 +169,7 @@ if (isset($_POST['sign_up_btn'])) {
     $password = $_POST['password'];
 
     // Fetch user from userss table
-    $stmt = $db->prepare("SELECT id, username, password, user_role FROM users WHERE contact_no = ?");
+    $stmt = $db->prepare("SELECT id, username, password, user_role FROM userss WHERE contact_no = ?");
     $stmt->bind_param("s", $contact_no);
     $stmt->execute();
     $result = $stmt->get_result();

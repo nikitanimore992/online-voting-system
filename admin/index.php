@@ -1,8 +1,9 @@
 <?php
     require_once ("inc/header.php");
+    require_once ("inc/navigation.php");  
 ?>
 
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -13,8 +14,9 @@
 <body>
     
 </body>
-</html>
+</html> -->
+<!-- <h1>hi this is nikita</h1> -->
 
 <?php
-    require_once ("inc/footer.php");
+     require_once ("inc/footer.php");
 ?>
