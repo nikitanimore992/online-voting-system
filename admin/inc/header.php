@@ -38,9 +38,7 @@ if (!isset($_SESSION['key']) || $_SESSION['key'] != "AdminKey") {
                 <h3>ONLINE VOTING SYSTEM - <small> WELCOME <?php echo $_SESSION['username']; ?></small></h3>
             </div>
         </div>
-    </div>
+ 
 
 
-</body>
-</html>
 
