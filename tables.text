@@ -1,12 +1,27 @@
 
-for users table sql comman 
+for users table sql command
 
-    CREATE TABLE userss (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    username VARCHAR(50) NOT NULL,
-    contact_no VARCHAR(15) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    user_role ENUM('Admin', 'Voter') DEFAULT 'Voter',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
+        CREATE TABLE userss (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        username VARCHAR(50) NOT NULL,
+        contact_no VARCHAR(15) NOT NULL UNIQUE,
+        password VARCHAR(255) NOT NULL,
+        user_role ENUM('Admin', 'Voter') DEFAULT 'Voter',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    );
+
+
+
+for election table sql command
+
+        CREATE TABLE elections (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        election_topic VARCHAR(255) NOT NULL,
+        no_of_candidates INT NOT NULL,
+        starting_date DATE NOT NULL,
+        ending_date DATE NOT NULL,
+        status VARCHAR(20) NOT NULL,
+        inserted_by VARCHAR(100),
+        inserted_on DATETIME
+    );
