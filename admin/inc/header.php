@@ -28,13 +28,19 @@ if (!isset($_SESSION['key']) || $_SESSION['key'] != "AdminKey") {
 </head>
 <body>
 
-<div class="container-fluid">
-    <div class="row bg-black text-white">
-        <div class="col-1">
-            <img src="../assets/images/logo.gif" width="80px" alt="image not found">
-        </div>   
-        <div class="col-11 my-auto">
-            <h3>ONLINE VOTING SYSTEM - <small> WELCOME <?php echo $_SESSION['username']; ?></small></h3>
+
+    <div class="container-fluid">
+        <div class="row bg-black text-white">
+            <div class="col-1">
+                <img src="../assets/images/logo.gif" width="80px" alt="image not found">
+            </div>   
+            <div class="col-11 my-auto">
+                <h3>ONLINE VOTING SYSTEM - <small> WELCOME <?php echo $_SESSION['username']; ?></small></h3>
+            </div>
         </div>
     </div>
+
+
+</body>
+</html>
 
