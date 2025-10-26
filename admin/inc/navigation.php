@@ -1,13 +1,3 @@
-<!-- <!DOCTYPE html>
-<htm lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - Online Voting System</title>
-    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../assets/css/style.css"> -->
-<!-- </head>
-<body>  -->
 
         <div class="row bg-green">
             <div class="col-12 bg-green">
@@ -38,5 +28,3 @@
                 </nav>
             </div>
         </div>
-<!-- </body>
-</html> -->
