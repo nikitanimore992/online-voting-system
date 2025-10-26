@@ -189,7 +189,7 @@ if (isset($_POST['sign_up_btn'])) {
 
                 $_SESSION['key']="AdminKey";
                 
-                echo "<script>location.assign('admin/index.php');</script>";
+                echo "<script>location.assign('admin/index.php?homepage=1');</script>";
             } else if ($user['user_role'] == "Voter") {
 
                 $_SESSION['key']="VoterKey";
