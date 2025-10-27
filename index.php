@@ -194,7 +194,7 @@ if (isset($_POST['sign_up_btn'])) {
 
                 $_SESSION['key']="VoterKey";
 
-                echo "<script>location.assign('dashboard.php');</script>";
+                echo "<script>location.assign('voters/dashboard.php');</script>";
             } else {
                 echo "<script>
                     alert('❌ Unknown user role!');

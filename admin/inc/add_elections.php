@@ -54,9 +54,9 @@
                             <td>{$row['ending_date']}</td>
                             <td class='{$statusColor}'><strong>{$row['status']}</strong></td>
                             <td>
-                                <a href='editElection.php?id={$row['id']}' class='btn btn-sm btn-primary'>Edit</a>
-                                <a href='deleteElection.php?id={$row['id']}' class='btn btn-sm btn-danger' onclick=\"return confirm('Are you sure you want to delete this election?');\">Delete</a>
-                            </td>
+                                <a href='#' class='btn btn-primary btn-sm'>Edit</a>
+                                <a href='#' class='btn btn-danger btn-sm'>Delete</a>
+                                </td>
                         </tr>";
                         $i++;
                     }
