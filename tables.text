@@ -40,3 +40,17 @@ candidate details table sql command
         PRIMARY KEY (id),
         FOREIGN KEY (election_id) REFERENCES elections(id) ON DELETE CASCADE
     );
+
+
+voting table sql command 
+
+        CREATE TABLE votings (
+        id INT(11) NOT NULL AUTO_INCREMENT,
+        election_id INT(11) DEFAULT NULL,
+        voters_id INT(11) DEFAULT NULL,
+        candidate_id INT(11) DEFAULT NULL,
+        vote_date DATE DEFAULT NULL,
+        vote_time TIME DEFAULT NULL,
+        PRIMARY KEY (id)
+    );
+
