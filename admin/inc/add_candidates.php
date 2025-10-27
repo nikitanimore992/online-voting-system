@@ -127,7 +127,7 @@ if (isset($_POST['addCandidateBtn'])) {
                     while ($row = mysqli_fetch_assoc($fetchingData)) {
                         echo "<tr>
                             <td>{$sno}</td>
-                            <td><img src='{$row['candidate_photo']}' alt='Candidate Photo' style='width:60px;height:60px;object-fit:cover;border-radius:5px;'></td>
+                            <td><img src='{$row['candidate_photo']}' alt='Candidate Photo' class='candidate-photo'></td>
                             <td>{$row['candidate_name']}</td>
                             <td>{$row['candidate_details']}</td>
                             <td>{$row['election_topic']}</td>
