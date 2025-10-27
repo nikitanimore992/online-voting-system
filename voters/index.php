@@ -61,7 +61,7 @@ require_once("inc/navigation.php");
                                          width="100"
                                          height="100"
                                          alt="Candidate Photo"
-                                         onerror="this.src='../admin/assets/images/default.png'">
+                                         onerror="this.src='../assets/images/default.png'">
                                 </td>
 
                                 <td><?php echo "<b>" . $candidateData['candidate_name'] . "</b><br />" . $candidateData['candidate_details']; ?></td>
