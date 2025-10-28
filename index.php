@@ -1,4 +1,58 @@
 
+<!-- ✅ Before user login, check all elections and automatically update their status:
+     - If an election's end date has passed → change status from 'Active' to 'Expired'
+     - If the start date has arrived and election was 'Inactive' → change it to 'Active'-->
+<?php
+// ✅ Use proper PHP tag (<?php not just <?)
+require_once(__DIR__ . "/admin/inc/config.php");
+
+// ✅ Fetch all elections
+$fetchElections = mysqli_query($db, "SELECT * FROM elections") or die(mysqli_error($db));
+
+while ($data = mysqli_fetch_assoc($fetchElections)) {
+    $starting_date = $data['starting_date'];
+    $ending_date   = $data['ending_date'];
+    $curr_date     = date("Y-m-d");
+    $election_id   = $data["id"];
+    $status        = $data['status'];
+
+//      ✅ Before login, auto-update election status:
+//      Active → Expired (if end date passed)
+//      InActive → Active (if start date reached)
+
+    // ✅ Convert to DateTime objects
+    $date1 = date_create($curr_date);
+
+    // ✅ If Active → check if it should expire
+    if ($status == "Active") {
+        $date2 = date_create($ending_date);
+        $diff  = date_diff($date1, $date2);
+
+        // If current date > ending date → mark as Expired
+        if ((int)$diff->format("%R%a") < 0) {
+            mysqli_query($db, "UPDATE elections SET status = 'Expired' WHERE id = '$election_id'")
+                or die(mysqli_error($db));
+        }
+    }
+
+    // ✅ If Inactive → check if it should become Active
+    else if ($status == "InActive") {
+        $date2 = date_create($starting_date);
+        $diff  = date_diff($date1, $date2);
+
+        // If current date >= starting date → make it Active
+        if ((int)$diff->format("%R%a") <= 0) {
+            mysqli_query($db, "UPDATE elections SET status = 'Active' WHERE id = '$election_id'")
+                or die(mysqli_error($db));
+        }
+    }
+}
+?>
+
+
+
+
+
 <!------ Include the above in your HEAD tag ---------->
 <!DOCTYPE html>
 <html>

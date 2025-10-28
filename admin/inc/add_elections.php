@@ -80,12 +80,13 @@ if (isset($_POST['addElectionBtn'])) {
 
     // ✅ Determine status
     $current_date = date("Y-m-d");
+
     if ($current_date < $starting_date) {
-        $status = "InActive"; // not started yet
-    } elseif ($current_date > $ending_date) {
-        $status = "InActive"; // already ended
+        $status = "InActive";  // Not started yet
+    } elseif ($current_date >= $starting_date && $current_date <= $ending_date) {
+        $status = "Active";    // Ongoing
     } else {
-        $status = "Active"; // ongoing election
+        $status = "Expired";   // Ended
     }
 
     // ✅ Prepared statement
