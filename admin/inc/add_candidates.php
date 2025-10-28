@@ -15,39 +15,84 @@ if (isset($_POST['addCandidateBtn'])) {
     $inserted_by = $_SESSION['username'];
     $inserted_on = date('Y-m-d H:i:s');
 
-    // ✅ Folder Path for Uploaded Photos
-    $target_folder = "assets/images/candidate_photos/";
-    if (!file_exists($target_folder)) mkdir($target_folder, 0777, true);
+    // // ✅ Folder Path for Uploaded Photos
+    // $target_folder = "assets/images/candidate_photos/";
+    // if (!file_exists($target_folder)) mkdir($target_folder, 0777, true);
 
-    // File Upload Handling
-    $unique_name = rand(111111111, 999999999) . "_" . rand(111111111, 999999999);
-    $filename = preg_replace("/[^a-zA-Z0-9.]/", "_", basename($_FILES['candidate_photo']['name']));
-    $candidate_photo = $target_folder . $unique_name . "_" . $filename;
-    $candidate_photo_tmp = $_FILES['candidate_photo']['tmp_name'];
-    $candidate_photo_type = strtolower(pathinfo($candidate_photo, PATHINFO_EXTENSION));
-    $allowed_types = array('jpg', 'jpeg', 'png');
-    $image_size = $_FILES['candidate_photo']['size'];
+    // // File Upload Handling
+    // $unique_name = rand(111111111, 999999999) . "_" . rand(111111111, 999999999);
+    // $filename = preg_replace("/[^a-zA-Z0-9.]/", "_", basename($_FILES['candidate_photo']['name']));
+    // $candidate_photo = $target_folder . $unique_name . "_" . $filename;
+    // $candidate_photo_tmp = $_FILES['candidate_photo']['tmp_name'];
+    // $candidate_photo_type = strtolower(pathinfo($candidate_photo, PATHINFO_EXTENSION));
+    // $allowed_types = array('jpg', 'jpeg', 'png');
+    // $image_size = $_FILES['candidate_photo']['size'];
 
-    if ($image_size < 2000000) { // 2MB limit
-        if (in_array($candidate_photo_type, $allowed_types)) {
-            if (move_uploaded_file($candidate_photo_tmp, $candidate_photo)) {
 
-                $stmt = $db->prepare("INSERT INTO candidate_details (election_id, candidate_name, candidate_details, candidate_photo, inserted_by, inserted_on) VALUES (?, ?, ?, ?, ?, ?)");
-                $stmt->bind_param("isssss", $election_id, $candidate_name, $candidate_details, $candidate_photo, $inserted_by, $inserted_on);
+// --------------------------------------------------------------------------------
 
-                if ($stmt->execute()) {
-                    echo "<script>alert('✅ Candidate Added Successfully!');location.assign('index.php?addCandidatesPage=1');</script>";
-                } else {
-                    echo "<script>alert('❌ Database Error! Try Again.');location.assign('index.php?addCandidatesPage=1');</script>";
-                }
-            } else {
-                echo "<script>alert('❌ Image Upload Failed!');</script>";
-            }
-        } else {
-            echo "<script>alert('❌ Invalid File Type! Only JPG, PNG, GIF Allowed.');</script>";
+// ✅ Folder Path for Uploaded Photos (outside admin folder)
+    $target_folder = "../assets/images/candidate_photos/";
+
+    // ✅ Create folder if not exists
+    if (!file_exists($target_folder)) {
+        mkdir($target_folder, 0777, true);
+    }
+
+    // ✅ File upload check
+    if (isset($_FILES['candidate_photo']) && $_FILES['candidate_photo']['error'] == 0) {
+
+        // ✅ Generate unique file name
+        $unique_name = rand(111111111, 999999999) . "_" . rand(111111111, 999999999);
+
+        // ✅ Clean file name
+        $filename = preg_replace("/[^a-zA-Z0-9.]/", "_", basename($_FILES['candidate_photo']['name']));
+
+        // ✅ Full upload path
+        $upload_path = $target_folder . $unique_name . "_" . $filename;
+
+        // ✅ Temporary file
+        $tmp_name = $_FILES['candidate_photo']['tmp_name'];
+
+        // ✅ File extension
+        $file_ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+        $allowed_types = array('jpg', 'jpeg', 'png');
+        $file_size = $_FILES['candidate_photo']['size'];
+
+        // ✅ Validate type
+        if (!in_array($file_ext, $allowed_types)) {
+            echo "<script>alert('❌ Invalid File Type! Only JPG, PNG Allowed.');</script>";
+            exit;
         }
+
+        // ✅ Validate size
+        if ($file_size > 2 * 1024 * 1024) { // 2MB
+            echo "<script>alert('❌ File Too Large! Max 2MB Allowed.');</script>";
+            exit;
+        }
+
+        // ✅ Move uploaded file
+        if (move_uploaded_file($tmp_name, $upload_path)) {
+
+            // ✅ Relative path to store in DB
+            $db_photo_path = "assets/images/candidate_photos/" . $unique_name . "_" . $filename;
+
+            // ✅ Insert into database
+            $stmt = $db->prepare("INSERT INTO candidate_details (election_id, candidate_name, candidate_details, candidate_photo, inserted_by, inserted_on) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("isssss", $election_id, $candidate_name, $candidate_details, $db_photo_path, $inserted_by, $inserted_on);
+
+            if ($stmt->execute()) {
+                echo "<script>alert('✅ Candidate Added Successfully!');location.assign('index.php?addCandidatesPage=1');</script>";
+            } else {
+                echo "<script>alert('❌ Database Error! Try Again.');location.assign('index.php?addCandidatesPage=1');</script>";
+            }
+
+        } else {
+            echo "<script>alert('❌ Image Upload Failed!');</script>";
+        }
+
     } else {
-        echo "<script>alert('❌ File Too Large! Max 2MB Allowed.');</script>";
+        echo "<script>alert('⚠️ No file selected or upload error.');</script>";
     }
 }
 ?>
@@ -127,7 +172,7 @@ if (isset($_POST['addCandidateBtn'])) {
                     while ($row = mysqli_fetch_assoc($fetchingData)) {
                         echo "<tr>
                             <td>{$sno}</td>
-                            <td><img src='{$row['candidate_photo']}' alt='Candidate Photo' class='candidate-photo'></td>
+                            <td><img src='../../{$row['candidate_photo']}' alt='Candidate Photo' class='candidate-photo'></td>
                             <td>{$row['candidate_name']}</td>
                             <td>{$row['candidate_details']}</td>
                             <td>{$row['election_topic']}</td>
