@@ -12,6 +12,8 @@
     }else if (isset($_GET['addCandidatePage'])) {
         // echo "<br><h3 class='text-center text-green'>Add Candidate Page</h3><br>";
         require_once ("inc/add_candidates.php");
+    }else if(isset($_GET['viewResult'])){
+        require_once("inc/viewResult.php");
     }
 ?>
 
