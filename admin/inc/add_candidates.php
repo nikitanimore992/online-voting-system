@@ -41,21 +41,11 @@ if (isset($_POST['addCandidateBtn'])) {
 
     // ✅ File upload check
     if (isset($_FILES['candidate_photo']) && $_FILES['candidate_photo']['error'] == 0) {
-
-        // ✅ Generate unique file name
-        $unique_name = rand(111111111, 999999999) . "_" . rand(111111111, 999999999);
-
-        // ✅ Clean file name
-        $filename = preg_replace("/[^a-zA-Z0-9.]/", "_", basename($_FILES['candidate_photo']['name']));
-
-        // ✅ Full upload path
-        $upload_path = $target_folder . $unique_name . "_" . $filename;
-
-        // ✅ Temporary file
-        $tmp_name = $_FILES['candidate_photo']['tmp_name'];
-
-        // ✅ File extension
-        $file_ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+        $unique_name = rand(111111111, 999999999) . "_" . rand(111111111, 999999999); // ✅ Generate unique file name
+        $filename = preg_replace("/[^a-zA-Z0-9.]/", "_", basename($_FILES['candidate_photo']['name'])); // ✅ Clean file name
+        $upload_path = $target_folder . $unique_name . "_" . $filename;  // ✅ Full upload path
+        $tmp_name = $_FILES['candidate_photo']['tmp_name']; // ✅ Temporary file
+        $file_ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION)); // ✅ File extension
         $allowed_types = array('jpg', 'jpeg', 'png');
         $file_size = $_FILES['candidate_photo']['size'];
 
@@ -172,7 +162,7 @@ if (isset($_POST['addCandidateBtn'])) {
                     while ($row = mysqli_fetch_assoc($fetchingData)) {
                         echo "<tr>
                             <td>{$sno}</td>
-                            <td><img src='../../{$row['candidate_photo']}' alt='Candidate Photo' class='candidate-photo'></td>
+                            <td><img src='../{$row['candidate_photo']}' alt='Candidate Photo' class='candidate-photo'></td>
                             <td>{$row['candidate_name']}</td>
                             <td>{$row['candidate_details']}</td>
                             <td>{$row['election_topic']}</td>

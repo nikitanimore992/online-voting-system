@@ -43,7 +43,7 @@ require_once("inc/navigation.php");
                             if (file_exists("../uploads/" . $candidate_photo)) {
                                 $photoPath = "../uploads/" . $candidate_photo;
                             } else {
-                                $photoPath = $candidate_photo; // In case DB already has full path
+                                $photoPath = "../assets/images/default.png"; //$candidate_photo; // In case DB already has full path
                             }
 
                             // Count total votes for this candidate
