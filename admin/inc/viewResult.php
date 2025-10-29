@@ -2,7 +2,7 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 } 
-include('./config.php'); // Example DB connection include
+// include('./config.php'); // Example DB connection include
 
 $election_id = mysqli_real_escape_string($db, $_GET['viewResult']);
 ?>
