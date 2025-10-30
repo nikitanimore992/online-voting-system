@@ -1,3 +1,19 @@
+
+<?php
+    if(isset($_GET['delete_id'])){
+    $delete_id = $_GET['delete_id'];
+    $stmt = $db->prepare("DELETE FROM elections WHERE id = ?");
+    $stmt->bind_param("i", $delete_id);
+    $stmt->execute();
+
+    echo "<div class='alert alert-danger my-3' role='alert'>
+            Election has been deleted successfully
+          </div>";
+}
+?>
+
+
+
 <div class="row my-3">
 
     <div class="col-4">
@@ -44,6 +60,7 @@
                 if ($result && $result->num_rows > 0) {
                     $i = 1;
                     while ($row = $result->fetch_assoc()) {
+                        $election_id = $row['id'];
                         $statusColor = ($row['status'] == 'Active') ? 'text-success' : 'text-danger';
                         echo "
                         <tr>
@@ -55,7 +72,7 @@
                             <td class='{$statusColor}'><strong>{$row['status']}</strong></td>
                             <td>
                                 <a href='#' class='btn btn-primary btn-sm'>Edit</a>
-                                <a href='#' class='btn btn-danger btn-sm'>Delete</a>
+                                <a href='#' class='btn btn-danger btn-sm' onclick='DeleteData($election_id)'>Delete</a>
                                 </td>
                         </tr>";
                         $i++;
@@ -68,6 +85,17 @@
         </table>
     </div>
 </div>
+
+<script>
+    function DeleteData(e_id){
+        // alert(e_id);
+        let c = confirm("Are you sure you really want to delete this? ");
+        if(c==true){
+            // alert("Data Deleted Successfully");
+        location.assign("index.php?addElectionPage=1&delete_id="+ e_id);
+        }
+}   
+</script>
 
 <?php
 if (isset($_POST['addElectionBtn'])) {
@@ -95,7 +123,9 @@ if (isset($_POST['addElectionBtn'])) {
 
     if ($stmt->execute()) {
         echo "<script>alert('✅ Election added successfully!');</script>";
-        echo "<script>location.assign('index.php?addElementPage=1&added=1')</script>";
+        // echo "<script>location.assign('index.php?addElementPage=1&added=1')</script>";
+        echo "<script>location.assign('index.php?addElectionPage=1&added=1')</script>";
+
     } else {
         echo "<script>alert('❌ Election add failed. Please try again.');</script>";
     }

@@ -1,183 +1,147 @@
 <?php
 include("config.php");
+if (session_status() === PHP_SESSION_NONE) session_start();
 
-// ✅ Start session if not already active
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+// ✅ Delete Candidate + Image
+// if (isset($_GET['delete_id'])) {
+//     $delete_id = $_GET['delete_id'];
 
-// ✅ Handle form submission
+//     // Fetch image path
+//     $result = $db->prepare("SELECT candidate_photo FROM candidate_details WHERE id = ?");
+//     $result->bind_param("i", $delete_id);
+//     $result->execute();
+//     $result->bind_result($photo_path);
+//     $result->fetch();
+//     $result->close();
+
+//     // Delete file from folder
+//     $full_path = "../" . $photo_path;
+//     if (file_exists($full_path)) unlink($full_path);
+
+//     // Delete record
+//     $stmt = $db->prepare("DELETE FROM candidate_details WHERE id = ?");
+
+//     $stmt->bind_param("i", $delete_id);
+//     $stmt->execute();
+
+//     echo "<div class='alert alert-danger my-3' role='alert'>
+//             Candidate deleted successfully!
+//           </div>";
+// }
+
+// ✅ Add Candidate
 if (isset($_POST['addCandidateBtn'])) {
-
     $election_id = $_POST['election_id'];
     $candidate_name = $_POST['candidate_name'];
     $candidate_details = $_POST['candidate_details'];
     $inserted_by = $_SESSION['username'];
     $inserted_on = date('Y-m-d H:i:s');
 
-    // // ✅ Folder Path for Uploaded Photos
-    // $target_folder = "assets/images/candidate_photos/";
-    // if (!file_exists($target_folder)) mkdir($target_folder, 0777, true);
-
-    // // File Upload Handling
-    // $unique_name = rand(111111111, 999999999) . "_" . rand(111111111, 999999999);
-    // $filename = preg_replace("/[^a-zA-Z0-9.]/", "_", basename($_FILES['candidate_photo']['name']));
-    // $candidate_photo = $target_folder . $unique_name . "_" . $filename;
-    // $candidate_photo_tmp = $_FILES['candidate_photo']['tmp_name'];
-    // $candidate_photo_type = strtolower(pathinfo($candidate_photo, PATHINFO_EXTENSION));
-    // $allowed_types = array('jpg', 'jpeg', 'png');
-    // $image_size = $_FILES['candidate_photo']['size'];
-
-
-// --------------------------------------------------------------------------------
-
-// ✅ Folder Path for Uploaded Photos (outside admin folder)
     $target_folder = "../assets/images/candidate_photos/";
+    if (!file_exists($target_folder)) mkdir($target_folder, 0777, true);
 
-    // ✅ Create folder if not exists
-    if (!file_exists($target_folder)) {
-        mkdir($target_folder, 0777, true);
-    }
-
-    // ✅ File upload check
     if (isset($_FILES['candidate_photo']) && $_FILES['candidate_photo']['error'] == 0) {
-        $unique_name = rand(111111111, 999999999) . "_" . rand(111111111, 999999999); // ✅ Generate unique file name
-        $filename = preg_replace("/[^a-zA-Z0-9.]/", "_", basename($_FILES['candidate_photo']['name'])); // ✅ Clean file name
-        $upload_path = $target_folder . $unique_name . "_" . $filename;  // ✅ Full upload path
-        $tmp_name = $_FILES['candidate_photo']['tmp_name']; // ✅ Temporary file
-        $file_ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION)); // ✅ File extension
-        $allowed_types = array('jpg', 'jpeg', 'png');
+        $unique_name = rand(111111111, 999999999) . "_" . rand(111111111, 999999999);
+        $filename = preg_replace("/[^a-zA-Z0-9.]/", "_", basename($_FILES['candidate_photo']['name']));
+        $upload_path = $target_folder . $unique_name . "_" . $filename;
+        $tmp_name = $_FILES['candidate_photo']['tmp_name'];
+        $file_ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+        $allowed_types = ['jpg', 'jpeg', 'png'];
         $file_size = $_FILES['candidate_photo']['size'];
 
-        // ✅ Validate type
         if (!in_array($file_ext, $allowed_types)) {
-            echo "<script>alert('❌ Invalid File Type! Only JPG, PNG Allowed.');</script>";
+            echo "<div class='alert alert-warning'>❌ Invalid File Type! Only JPG/PNG allowed.</div>";
+            exit;
+        }
+        if ($file_size > 2 * 1024 * 1024) {
+            echo "<div class='alert alert-warning'>❌ File too large! Max 2MB.</div>";
             exit;
         }
 
-        // ✅ Validate size
-        if ($file_size > 2 * 1024 * 1024) { // 2MB
-            echo "<script>alert('❌ File Too Large! Max 2MB Allowed.');</script>";
-            exit;
-        }
-
-        // ✅ Move uploaded file
         if (move_uploaded_file($tmp_name, $upload_path)) {
-
-            // ✅ Relative path to store in DB
             $db_photo_path = "assets/images/candidate_photos/" . $unique_name . "_" . $filename;
-
-            // ✅ Insert into database
             $stmt = $db->prepare("INSERT INTO candidate_details (election_id, candidate_name, candidate_details, candidate_photo, inserted_by, inserted_on) VALUES (?, ?, ?, ?, ?, ?)");
             $stmt->bind_param("isssss", $election_id, $candidate_name, $candidate_details, $db_photo_path, $inserted_by, $inserted_on);
-
             if ($stmt->execute()) {
-                echo "<script>alert('✅ Candidate Added Successfully!');location.assign('index.php?addCandidatesPage=1');</script>";
+                echo "<script>alert('✅ Candidate added successfully!');location.assign('index.php?addCandidatePage=1');</script>";
             } else {
-                echo "<script>alert('❌ Database Error! Try Again.');location.assign('index.php?addCandidatesPage=1');</script>";
+                echo "<script>alert('❌ Database error!');</script>";
             }
-
         } else {
-            echo "<script>alert('❌ Image Upload Failed!');</script>";
+            echo "<div class='alert alert-danger'>❌ Image upload failed!</div>";
         }
-
     } else {
-        echo "<script>alert('⚠️ No file selected or upload error.');</script>";
+        echo "<div class='alert alert-warning'>⚠️ No file selected or upload error.</div>";
     }
 }
 ?>
 
 <div class="row my-3">
-
-    <!-- ✅ Left Side: Add Candidate Form -->
     <div class="col-4">
-        <h3>Add New Candidates</h3>
+        <h3>Add New Candidate</h3>
         <form action="" method="POST" enctype="multipart/form-data">
             <div class="form-group">
                 <select class="form-control" name="election_id" required>
                     <option value="">Select Election</option>
                     <?php
-                    $fetchingElections = mysqli_query($db, "SELECT * FROM elections") or die(mysqli_error($db));
-                    if (mysqli_num_rows($fetchingElections) > 0) {
-                        while ($row = mysqli_fetch_assoc($fetchingElections)) {
-                            $election_id = $row['id'];
-                            $election_name = $row['election_topic'];
-                            $allowed_candidates = $row['no_of_candidates'];
-
-                            $fetchingCandidates = mysqli_query($db, "SELECT * FROM candidate_details WHERE election_id='$election_id'");
-                            $added_candidates = mysqli_num_rows($fetchingCandidates);
-
-                            if ($added_candidates < $allowed_candidates) {
-                                echo "<option value='$election_id'>$election_name ($allowed_candidates - $added_candidates slots left)</option>";
-                            }
+                    $fetchingElections = mysqli_query($db, "SELECT * FROM elections");
+                    while ($row = mysqli_fetch_assoc($fetchingElections)) {
+                        $eid = $row['id'];
+                        $ename = $row['election_topic'];
+                        $allowed = $row['no_of_candidates'];
+                        $added = mysqli_num_rows(mysqli_query($db, "SELECT * FROM candidate_details WHERE election_id='$eid'"));
+                        if ($added < $allowed) {
+                            echo "<option value='$eid'>$ename ($allowed - $added slots left)</option>";
                         }
-                    } else {
-                        echo "<option value=''>Please add election first</option>";
                     }
                     ?>
                 </select>
             </div>
-
-            <div class="form-group">
-                <input type="text" name="candidate_name" placeholder="Candidate Name" class="form-control" required />
-            </div>
-
-            <div class="form-group">
-                <input type="file" name="candidate_photo" class="form-control" required />
-            </div>
-
-            <div class="form-group mb-3">
-                <input type="text" name="candidate_details" placeholder="Candidate Details" class="form-control" required />
-            </div>
-
+            <div class="form-group"><input type="text" name="candidate_name" placeholder="Candidate Name" class="form-control" required /></div>
+            <div class="form-group"><input type="file" name="candidate_photo" class="form-control" required /></div>
+            <div class="form-group mb-3"><input type="text" name="candidate_details" placeholder="Candidate Details" class="form-control" required /></div>
             <input type="submit" value="Add Candidate" name="addCandidateBtn" class="btn btn-success" />
         </form>
     </div>
 
-    <!-- ✅ Right Side: Candidate List -->
     <div class="col-8">
-        <h3>Candidates Details</h3>
+        <h3>Candidates List</h3>
         <table class="table table-bordered">
             <thead>
-                <tr>
-                    <th>S.No</th>
-                    <th>Photo</th>
-                    <th>Name</th>
-                    <th>Details</th>
-                    <th>Election</th>
-                    <th>Action</th>
-                </tr>
+                <tr><th>S.No</th><th>Photo</th><th>Name</th><th>Details</th><th>Election</th><th>Action</th></tr>
             </thead>
             <tbody>
                 <?php
-                $fetchingData = mysqli_query($db, "
-                    SELECT c.*, e.election_topic 
-                    FROM candidate_details c
-                    JOIN elections e ON c.election_id = e.id
-                    ORDER BY c.id DESC
-                ") or die(mysqli_error($db));
-
+                $fetchingData = mysqli_query($db, "SELECT c.*, e.election_topic FROM candidate_details c JOIN elections e ON c.election_id = e.id ORDER BY c.id DESC");
                 if (mysqli_num_rows($fetchingData) > 0) {
                     $sno = 1;
                     while ($row = mysqli_fetch_assoc($fetchingData)) {
                         echo "<tr>
                             <td>{$sno}</td>
-                            <td><img src='../{$row['candidate_photo']}' alt='Candidate Photo' class='candidate-photo'></td>
+                            <td><img src='../{$row['candidate_photo']}' class='candidate-photo' style='border-radius: 10px;'></td>
                             <td>{$row['candidate_name']}</td>
                             <td>{$row['candidate_details']}</td>
                             <td>{$row['election_topic']}</td>
                             <td>
                                 <a href='#' class='btn btn-warning btn-sm'>Edit</a>
-                                <a href='#' class='btn btn-danger btn-sm'>Delete</a>
+                                <a href='#' class='btn btn-danger btn-sm' onclick='DeleteData({$row['id']})'>Delete</a>
                             </td>
                         </tr>";
                         $sno++;
                     }
                 } else {
-                    echo "<tr><td colspan='6' class='text-center'>No candidates added yet.</td></tr>";
+                    echo "<tr><td colspan='6' class='text-center text-muted'>No candidates added yet.</td></tr>";
                 }
                 ?>
             </tbody>
         </table>
     </div>
 </div>
+
+<!-- <script>
+// function DeleteData(id) {
+//     if (confirm("Are you sure you want to delete this candidate?")) {
+//         location.assign("index.php?addCandidatesPage=1&delete_id=" + id);
+//     }
+// }
+// </script> -->
