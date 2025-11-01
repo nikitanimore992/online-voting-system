@@ -49,10 +49,6 @@ while ($data = mysqli_fetch_assoc($fetchElections)) {
 }
 ?>
 
-
-
-
-
 <!------ Include the above in your HEAD tag ---------->
 <!DOCTYPE html>
 <html>
