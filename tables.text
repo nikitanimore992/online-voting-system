@@ -54,4 +54,3 @@ voting table sql command
         PRIMARY KEY (id)
     );
 
- <!-- <td><img src="<?php echo $candidate_photo; ?>" class="candidate_photo" alt=""></td> -->
