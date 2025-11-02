@@ -101,6 +101,7 @@ require_once("inc/navigation.php");
             echo "No active elections found.";
         }
         ?>
+        
     </div>
 </div>
 
