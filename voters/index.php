@@ -95,7 +95,9 @@ require_once("inc/navigation.php");
                     </tbody>
                 </table>
 
-        <?php
+       
+       
+       <?php
             }
         } else {
             echo "No active elections found.";
