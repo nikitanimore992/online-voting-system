@@ -56,7 +56,7 @@ if ($countActiveElections > 0) {
                 </tr>
                 <tr>
                     <th>S.No</th>
-                    <th>Photo</th>
+                    <!-- <th>Photo</th> -->
                     <th>Candidate Details</th>
                     <th># of Votes</th>
                     <th>Result</th>
@@ -66,7 +66,7 @@ if ($countActiveElections > 0) {
                 <?php
                 $sno = 1;
                 foreach ($candidates as $candidateData) {
-                    $candidate_photo = $candidateData['candidate_photo'];
+                    // $candidate_photo = $candidateData['candidate_photo'];
                     $candidate_name = $candidateData['candidate_name'];
                     $candidate_details = $candidateData['candidate_details'];
                     $totalVotes = $candidateData['total_votes'];
@@ -89,11 +89,11 @@ if ($countActiveElections > 0) {
                     ?>
                     <tr>
                         <td><?php echo $sno++; ?></td>
-                        <td>
+                        <!-- <td>
                             <img src="<?php echo $photoPath; ?>" width="100" height="100"
                                  alt="Candidate Photo"
                                  onerror="this.src='../assets/images/'">
-                        </td>
+                        </td> -->
                         <td>
                             <b><?php echo htmlspecialchars($candidate_name); ?></b><br>
                             <?php echo htmlspecialchars($candidate_details); ?>

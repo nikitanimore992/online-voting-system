@@ -9,6 +9,9 @@ require_once(__DIR__ . "/admin/inc/config.php");
 // ✅ Fetch all elections
 $fetchElections = mysqli_query($db, "SELECT * FROM elections") or die(mysqli_error($db));
 
+// echo date_default_timezone_get();
+date_default_timezone_set("Asia/Kolkata");
+
 while ($data = mysqli_fetch_assoc($fetchElections)) {
     $starting_date = $data['starting_date'];
     $ending_date   = $data['ending_date'];

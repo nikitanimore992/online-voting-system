@@ -31,6 +31,9 @@ if (session_status() === PHP_SESSION_NONE) session_start();
 
 // ✅ Add Candidate
 if (isset($_POST['addCandidateBtn'])) {
+
+    date_default_timezone_set("Asia/Kolkata");
+
     $election_id = $_POST['election_id'];
     $candidate_name = $_POST['candidate_name'];
     $candidate_details = $_POST['candidate_details'];

@@ -99,6 +99,8 @@
 
 <?php
 if (isset($_POST['addElectionBtn'])) {
+    date_default_timezone_set("Asia/Kolkata");
+    
     $election_topic = mysqli_real_escape_string($db, $_POST['election_topic']);
     $number_of_candidates = mysqli_real_escape_string($db, $_POST['number_of_candidates']);
     $starting_date = mysqli_real_escape_string($db, $_POST['starting_date']);

@@ -2,6 +2,8 @@
 require_once(__DIR__ . "/../../admin/inc/config.php");
 
 if (isset($_POST['e_id']) && isset($_POST['c_id']) && isset($_POST['v_id'])) {
+    
+    date_default_timezone_set("Asia/Kolkata");
 
     $election_id = mysqli_real_escape_string($db, $_POST['e_id']);
     $candidate_id = mysqli_real_escape_string($db, $_POST['c_id']);

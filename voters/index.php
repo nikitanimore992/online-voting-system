@@ -12,6 +12,7 @@ require_once("inc/navigation.php");
         $countActiveElections = mysqli_num_rows($fetchingActiveElections);
 
         if ($countActiveElections > 0) {
+
             while ($data = mysqli_fetch_assoc($fetchingActiveElections)) {
                 $fetching_id = $data['id'];
                 $election_topic = $data['election_topic'];
